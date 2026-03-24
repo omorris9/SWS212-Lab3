@@ -1,0 +1,177 @@
+# OliviaMorrison_SWS212Lab3
+
+This project implements a Network Incident Management system as per SWS-212 Lab #3 requirements. It consists of a FastAPI backend with JWT authentication and MongoDB Atlas integration, and a React frontend for user interaction.
+
+## Project Structure
+
+```
+OliviaMorrison_SWS212Lab3/
+├── backend/
+│   ├── main.py
+│   ├── auth.py
+│   ├── jwt_utils.py
+│   ├── database.py
+│   ├── incidents.py
+│   ├── models.py
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   ├── package.json
+│   └── ...
+├── README.md
+└── OliviaMorrison_SWS212Lab3.mp4 (demonstration video)
+```
+
+## Features
+
+### Backend API (FastAPI)
+- **Health Endpoint**: `GET /health` - Returns `{"status": "ok"}`
+- **Incident Management**:
+  - `GET /incidents` - Retrieve all incidents
+  - `GET /incidents/{id}` - Retrieve a specific incident
+  - `POST /incidents` - Create a new incident (requires authentication)
+  - `PUT /incidents/{id}` - Update an incident (requires authentication)
+  - `DELETE /incidents/{id}` - Delete an incident (requires authentication)
+- **Authentication**:
+  - `POST /register` - Register a new user
+  - `POST /token` - Login and obtain JWT token
+- **Security**: Password hashing with Argon2, JWT-based authentication
+- **Database**: MongoDB Atlas integration with proper ObjectId handling
+
+### Frontend UI (React + Vite)
+- User authentication (login form)
+- View incidents list
+- Create new incidents
+- Delete incidents
+- JWT token storage and API request headers
+
+## Local Development
+
+### Prerequisites
+- Python 3.8+
+- Node.js 16+
+- MongoDB Atlas account
+- Git
+
+### Backend Setup
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Set environment variables:
+   Create a `.env` file in the backend directory with:
+   ```
+   MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority
+   SECRET_KEY=your_super_secret_key_here
+   ```
+
+5. Run the backend locally:
+   ```bash
+   uvicorn main:app --reload
+   ```
+
+   The API will be available at `http://localhost:8000`
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the frontend locally:
+   ```bash
+   npm run dev
+   ```
+
+   The UI will be available at `http://localhost:5173` (default Vite port)
+
+## Environment Variables
+
+The following environment variables are required:
+
+- `MONGO_URI`: MongoDB Atlas connection string
+- `SECRET_KEY`: Secret key for JWT token signing
+
+## Deployment to Render
+
+### Backend Deployment
+
+1. Create a new **Web Service** on Render
+2. Connect your GitHub repository
+3. Set the **Root Directory** to `backend`
+4. Set the **Start Command** to:
+   ```bash
+   uvicorn main:app --host 0.0.0.0 --port $PORT
+   ```
+5. Add environment variables in Render dashboard:
+   - `MONGO_URI`
+   - `SECRET_KEY`
+6. Deploy
+
+### Frontend Deployment
+
+1. Create a new **Static Site** on Render
+2. Connect your GitHub repository
+3. Set the **Root Directory** to `frontend`
+4. Set the **Build Command** to:
+   ```bash
+   npm run build
+   ```
+5. Set the **Publish Directory** to `dist`
+6. Deploy
+
+## API Documentation
+
+Once the backend is running, visit `http://localhost:8000/docs` for interactive API documentation.
+
+## Example Login Request
+
+```bash
+curl -X POST "http://localhost:8000/token" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "username=your_username&password=your_password"
+```
+
+Response:
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "bearer"
+}
+```
+
+Use the `access_token` in subsequent requests:
+```
+Authorization: Bearer <access_token>
+```
+
+## Testing
+
+- Health check: `GET /health`
+- Register a user: `POST /register`
+- Login: `POST /token`
+- Create incident: `POST /incidents` (with auth)
+- View incidents: `GET /incidents`
+
+## Demonstration Video
+
+See `OliviaMorrison_SWS212Lab3.mp4` for a 4-5 minute demonstration of the deployed application.
