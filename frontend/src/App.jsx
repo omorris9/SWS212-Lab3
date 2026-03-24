@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 //const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/";
 //const API_BASE = "http://127.0.0.1:8000";
-const APU_BASE = "https://lab3-dv4i.onrender.com"; //Backend
+const API_BASE = "https://lab3-dv4i.onrender.com"; //Backend
 console.log("API BASE:", API_BASE);
 
 
